@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LucasTop25</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#0B1220; --panel:#121B2E; --ink:#E8EAF0; --ink-soft:#8A96AC; --amber:#E8A33D; --line:#223049; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Work Sans',sans-serif; }
+  .page{ max-width:640px; margin:0 auto; padding:60px 20px; }
+  h1{ font-family:'Big Shoulders Display',sans-serif; font-weight:800; text-transform:uppercase; font-size:36px; margin-bottom:6px; }
+  h1 span{ color:var(--amber); }
+  p{ color:var(--ink-soft); font-size:14px; }
+  .links{ display:flex; flex-direction:column; gap:12px; margin-top:24px; }
+  a.card{ display:block; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 20px; color:var(--ink); text-decoration:none; }
+  a.card:hover{ border-color:var(--amber); }
+  a.card .t{ font-weight:500; font-size:15px; }
+  a.card .d{ color:var(--ink-soft); font-size:12.5px; margin-top:2px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>LUCAS<span>TOP25</span></h1>
+  <p>Ferramentas do projeto — monte o ranking e visualize no scoreboard.</p>
+  <div class="links">
+    <a class="card" href="tier-builder.html">
+      <div class="t">Monta-Ranking</div>
+      <div class="d">Cole a saída do script, detecte tiers, monte sua lista</div>
+    </a>
+    <a class="card" href="scoreboard.html">
+      <div class="t">Scoreboard</div>
+      <div class="d">Visual do ranking semanal, exportável em PNG/PDF/XLSX</div>
+    </a>
+  </div>
+</div>
+</body>
+</html>

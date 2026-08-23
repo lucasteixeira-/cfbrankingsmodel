@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LucasTop25 — College Football Poll</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B1220;
+    --panel: #121B2E;
+    --panel-alt: #16233A;
+    --ink: #E8EAF0;
+    --ink-soft: #8A96AC;
+    --amber: #E8A33D;
+    --amber-soft: rgba(232, 163, 61, 0.14);
+    --up: #4FD1A5;
+    --up-bg: rgba(79, 209, 165, 0.12);
+    --down: #FF6B5B;
+    --down-bg: rgba(255, 107, 91, 0.12);
+    --new: #6FA8DC;
+    --new-bg: rgba(111, 168, 220, 0.14);
+    --neutral: #5C6B82;
+    --line: #223049;
+    --radius: 10px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 500px at 15% -10%, rgba(232,163,61,0.08), transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 36px 20px 56px;
+  }
+
+  /* ---------- Header bar ---------- */
+  .header-bar{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-bar::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--amber), transparent);
+  }
+  .brand-block{ padding-left: 8px; }
+  .eyebrow{
+    font-family: 'Space Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .wordmark{
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: clamp(30px, 5vw, 42px);
+    letter-spacing: 0.5px;
+    color: var(--ink);
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .wordmark span{ color: var(--amber); }
+
+  .clock-fields{
+    display:flex;
+    gap: 14px;
+  }
+  .clock-field{
+    background: var(--panel-alt);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 8px 14px;
+    text-align:center;
+    min-width: 88px;
+  }
+  .clock-field label{
+    display:block;
+    font-family:'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .clock-field [contenteditable]{
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--amber);
+    outline: none;
+  }
+
+  /* ---------- Toolbar / helper line ---------- */
+  .subline{
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    padding: 18px 4px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .subline p{
+    margin:0;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .toolbar{ display:flex; gap: 8px; flex-wrap: wrap; }
+  .btn{
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 12.5px;
+    letter-spacing: 0.3px;
+    color: var(--ink);
+    background: transparent;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover{ border-color: var(--amber); color: var(--amber); background: var(--amber-soft); }
+  .btn:focus-visible{ outline: 2px solid var(--amber); outline-offset: 2px; }
+
+  /* ---------- Column labels row (replaces table header) ---------- */
+  .col-labels{
+    display:grid;
+    grid-template-columns: 64px 1.7fr 0.9fr 0.65fr 0.55fr 0.75fr 0.6fr 0.75fr;
+    gap: 6px;
+    padding: 0 14px 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    min-width: 720px;
+  }
+  .col-labels span:not(:first-child){ text-align:center; }
+  .col-labels span:nth-child(2){ text-align:left; }
+
+  .rows-wrap{ overflow-x: auto; }
+  .rows{
+    display:flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 720px;
+  }
+
+  /* ---------- Row card ---------- */
+  .row-card{
+    display:grid;
+    grid-template-columns: 64px 1.7fr 0.9fr 0.65fr 0.55fr 0.75fr 0.6fr 0.75fr;
+    gap: 6px;
+    align-items:center;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .row-card:hover{ border-color: rgba(232,163,61,0.4); background: var(--panel-alt); }
+
+  /* Rank: scoreboard segment box (signature element) */
+  .rank-box{
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--amber);
+    background: var(--panel-alt);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    width: 44px;
+    height: 34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  [contenteditable]{ outline: none; }
+  [contenteditable]:focus{
+    background: rgba(232,163,61,0.12);
+    border-radius: 4px;
+  }
+
+  .team-name{
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    min-height: 20px;
+  }
+  .conf-tag{
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--panel-alt);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px 8px;
+    text-align:center;
+    min-height: 14px;
+  }
+  .record, .prev-rank, .preseason-rank{
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    text-align:center;
+    color: var(--ink-soft);
+    min-height: 18px;
+  }
+  .record{ color: var(--ink); }
+
+  /* Movement pills */
+  .mov-cell{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 5px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 5px 8px;
+    border-radius: 999px;
+    width: fit-content;
+    margin: 0 auto;
+    min-width: 40px;
+    min-height: 14px;
+  }
+  .mov-icon{ font-size: 10px; line-height:1; }
+  .mov-value{ min-width: 10px; text-align:center; }
+
+  .mov-cell.is-up{ color: var(--up); background: var(--up-bg); }
+  .mov-cell.is-down{ color: var(--down); background: var(--down-bg); }
+  .mov-cell.is-flat{ color: var(--neutral); background: transparent; }
+  .mov-cell.is-new{ color: var(--new); background: var(--new-bg); }
+  .mov-cell.is-empty{ color: var(--ink-soft); background: transparent; }
+
+  footer{ margin-top: 20px; text-align:center; }
+  footer p{ font-size: 11px; color: var(--ink-soft); }
+
+  @media (max-width: 640px){
+    .header-bar{ align-items: flex-start; }
+    .subline{ flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page" id="capture-area">
+
+  <div class="header-bar">
+    <div class="brand-block">
+      <div class="eyebrow">College Football · Weekly Ranking</div>
+      <div class="wordmark">LUCAS<span>TOP25</span></div>
+    </div>
+    <div class="clock-fields">
+      <div class="clock-field">
+        <label>Week</label>
+        <div contenteditable="true">Week 1</div>
+      </div>
+      <div class="clock-field">
+        <label>Date</label>
+        <div contenteditable="true">--/--/----</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subline">
+    <p>Click any cell to edit. Movement indicators update automatically.</p>
+    <div class="toolbar no-export">
+      <button class="btn" onclick="exportPNG()">Download PNG</button>
+      <button class="btn" onclick="exportPDF()">Download PDF</button>
+      <button class="btn" onclick="exportXLSX()">Download Spreadsheet</button>
+    </div>
+  </div>
+
+  <div class="rows-wrap">
+    <div class="col-labels">
+      <span>#</span>
+      <span>Team</span>
+      <span>Conf.</span>
+      <span>Record</span>
+      <span>Prev.</span>
+      <span>Wk Mov.</span>
+      <span>Pre-S.</span>
+      <span>Szn Mov.</span>
+    </div>
+    <div class="rows" id="ranking-body"></div>
+  </div>
+
+  <footer>
+    <p>LucasTop25 · Personal support index, based on resume/merit adjusted for strength of schedule.</p>
+  </footer>
+
+</div>
+
+<!-- Hidden table used only for XLSX export (SheetJS reads from a <table>) -->
+<table id="ranking-table" style="display:none;">
+  <thead>
+    <tr>
+      <th>#</th><th>Team</th><th>Conference</th><th>Record</th><th>Prev.</th><th>Wk Mov.</th><th>Pre-S.</th><th>Szn Mov.</th>
+    </tr>
+  </thead>
+  <tbody id="ranking-table-body"></tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+  const body = document.getElementById('ranking-body');
+  const tableBody = document.getElementById('ranking-table-body');
+
+  function makeMovCell(){
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <div class="mov-cell is-empty">
+        <span class="mov-icon" aria-hidden="true"></span>
+        <span class="mov-value" contenteditable="true"></span>
+      </div>`;
+    return div.firstElementChild;
+  }
+
+  // If present, window.__LUCASTOP25_INITIAL__ is an array of up to 25 objects
+  // { team, conf, record, preseasonRank } — used by the tier-builder export
+  // to arrive pre-filled. Without it, normal behavior (25 empty, editable
+  // rows, same as always).
+  const initialData = window.__LUCASTOP25_INITIAL__ || [];
+  if(initialData.length > 0){
+    const weekField = document.querySelectorAll('.clock-field [contenteditable]')[0];
+    if(weekField && weekField.textContent.trim() === 'Week 1'){
+      weekField.textContent = 'Preseason';
+    }
+  }
+
+  for(let i=1; i<=25; i++){
+    const row = document.createElement('div');
+    row.className = 'row-card';
+    const seed = initialData[i - 1] || {};
+
+    const rankBox = document.createElement('div');
+    rankBox.className = 'rank-box';
+    rankBox.textContent = i;
+    row.appendChild(rankBox);
+
+    const teamEl = document.createElement('div');
+    teamEl.className = 'team-name';
+    teamEl.contentEditable = 'true';
+    teamEl.textContent = seed.team || '';
+    row.appendChild(teamEl);
+
+    const confEl = document.createElement('div');
+    confEl.className = 'conf-tag';
+    confEl.contentEditable = 'true';
+    confEl.textContent = seed.conf || '';
+    row.appendChild(confEl);
+
+    const recordEl = document.createElement('div');
+    recordEl.className = 'record';
+    recordEl.contentEditable = 'true';
+    recordEl.textContent = seed.record || '';
+    row.appendChild(recordEl);
+
+    const prevEl = document.createElement('div');
+    prevEl.className = 'prev-rank';
+    prevEl.contentEditable = 'true';
+    row.appendChild(prevEl);
+
+    row.appendChild(makeMovCell());
+
+    const preEl = document.createElement('div');
+    preEl.className = 'preseason-rank';
+    preEl.contentEditable = 'true';
+    preEl.textContent = seed.preseasonRank !== undefined ? seed.preseasonRank : '';
+    row.appendChild(preEl);
+
+    row.appendChild(makeMovCell());
+
+    body.appendChild(row);
+
+    // linha espelhada na tabela oculta (para export XLSX)
+    tableBody.appendChild(document.createElement('tr'));
+  }
+
+  // ---------- Movement auto-coloring ----------
+  function parseMovement(raw){
+    const s = raw.trim().toLowerCase();
+    if(s === '') return { type:'empty' };
+    if(s === 'new' || s === 'n') return { type:'new' };
+    const num = parseInt(s.replace('+',''), 10);
+    if(isNaN(num)) return { type:'empty' };
+    if(num > 0) return { type:'up', value:num };
+    if(num < 0) return { type:'down', value:Math.abs(num) };
+    return { type:'flat' };
+  }
+
+  function refreshMovCell(cell){
+    const valueSpan = cell.querySelector('.mov-value');
+    const iconSpan = cell.querySelector('.mov-icon');
+    const parsed = parseMovement(valueSpan.textContent);
+
+    cell.classList.remove('is-up','is-down','is-flat','is-new','is-empty');
+
+    switch(parsed.type){
+      case 'up': cell.classList.add('is-up'); iconSpan.textContent = '▲'; break;
+      case 'down': cell.classList.add('is-down'); iconSpan.textContent = '▼'; break;
+      case 'flat': cell.classList.add('is-flat'); iconSpan.textContent = '—'; break;
+      case 'new':
+        cell.classList.add('is-new');
+        iconSpan.textContent = '';
+        valueSpan.textContent = 'NEW';
+        break;
+      default:
+        cell.classList.add('is-empty');
+        iconSpan.textContent = '';
+    }
+  }
+
+  function reformatMovValue(cell){
+    const valueSpan = cell.querySelector('.mov-value');
+    const parsed = parseMovement(valueSpan.textContent);
+    if(parsed.type === 'up') valueSpan.textContent = '+' + parsed.value;
+    if(parsed.type === 'down') valueSpan.textContent = '-' + parsed.value;
+    if(parsed.type === 'flat') valueSpan.textContent = '0';
+  }
+
+  document.addEventListener('input', (e) => {
+    if(e.target.classList.contains('mov-value')){
+      refreshMovCell(e.target.closest('.mov-cell'));
+    }
+  });
+  document.addEventListener('focusout', (e) => {
+    if(e.target.classList.contains('mov-value')){
+      reformatMovValue(e.target.closest('.mov-cell'));
+      refreshMovCell(e.target.closest('.mov-cell'));
+    }
+  });
+
+  // ---------- Sync visible rows -> hidden table (for XLSX export) ----------
+  function syncHiddenTable(){
+    const rows = document.querySelectorAll('.row-card');
+    const trs = tableBody.querySelectorAll('tr');
+    rows.forEach((row, i) => {
+      const cells = row.children;
+      const rank = cells[0].textContent.trim();
+      const team = cells[1].textContent.trim();
+      const conf = cells[2].textContent.trim();
+      const record = cells[3].textContent.trim();
+      const prev = cells[4].textContent.trim();
+      const movWeek = cells[5].querySelector('.mov-value').textContent.trim();
+      const pre = cells[6].textContent.trim();
+      const movSeason = cells[7].querySelector('.mov-value').textContent.trim();
+      trs[i].innerHTML = `<td>${rank}</td><td>${team}</td><td>${conf}</td><td>${record}</td><td>${prev}</td><td>${movWeek}</td><td>${pre}</td><td>${movSeason}</td>`;
+    });
+  }
+
+  // ---------- Export helpers ----------
+  function getWeekLabel(){
+    const week = document.querySelectorAll('.clock-field [contenteditable]')[0].textContent.trim() || 'ranking';
+    return week.replace(/\s+/g, '_');
+  }
+
+  async function exportPNG(){
+    document.querySelectorAll('.no-export').forEach(el => el.style.visibility = 'hidden');
+    const canvas = await html2canvas(document.getElementById('capture-area'), { scale: 2, backgroundColor: '#0B1220' });
+    document.querySelectorAll('.no-export').forEach(el => el.style.visibility = 'visible');
+    const link = document.createElement('a');
+    link.download = `LucasTop25_${getWeekLabel()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  async function exportPDF(){
+    document.querySelectorAll('.no-export').forEach(el => el.style.visibility = 'hidden');
+    const canvas = await html2canvas(document.getElementById('capture-area'), { scale: 2, backgroundColor: '#0B1220' });
+    document.querySelectorAll('.no-export').forEach(el => el.style.visibility = 'visible');
+
+    const { jsPDF } = window.jspdf;
+    const imgData = canvas.toDataURL('image/png');
+    const pdfWidth = 595.28;
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: [pdfWidth, pdfHeight] });
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`LucasTop25_${getWeekLabel()}.pdf`);
+  }
+
+  function exportXLSX(){
+    syncHiddenTable();
+    const wb = XLSX.utils.table_to_book(document.getElementById('ranking-table'), { sheet: getWeekLabel() });
+    XLSX.writeFile(wb, `LucasTop25_${getWeekLabel()}.xlsx`);
+  }
+</script>
+
+</body>
+</html>

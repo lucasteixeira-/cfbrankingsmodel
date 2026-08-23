@@ -1,0 +1,72 @@
+name: Run LucasTop25 Ranking
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: "Temporada (ex: 2026)"
+        required: true
+        default: "2026"
+      week:
+        description: "Semana (ex: 5)"
+        required: true
+        default: "1"
+      no_bowls:
+        description: "Excluir bowls/CFP (corte pos-conferencias)"
+        type: boolean
+        default: false
+      preseason:
+        description: "Modo pre-temporada (ignora week/no_bowls)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Rodar o script
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          mkdir -p data/${{ inputs.season }}
+          cd data/${{ inputs.season }}
+
+          ARGS="--season ${{ inputs.season }} --week ${{ inputs.week }} --top 50 --detail"
+          if [ "${{ inputs.no_bowls }}" = "true" ]; then
+            ARGS="$ARGS --no-bowls"
+          fi
+          if [ "${{ inputs.preseason }}" = "true" ]; then
+            ARGS="--season ${{ inputs.season }} --preseason --top 50"
+          fi
+
+          python ../../scripts/lucastop25_indice.py $ARGS | tee run_output.txt
+
+          if [ "${{ inputs.preseason }}" = "true" ]; then
+            OUTNAME="preseason"
+          else
+            OUTNAME="week${{ inputs.week }}"
+          fi
+          mv run_output.txt "${OUTNAME}_log.txt"
+          mv LucasTop25_*.csv "${OUTNAME}.csv" 2>/dev/null || true
+
+      - name: Commit resultado no repositorio
+        run: |
+          git config user.name "lucastop25-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "Ranking: temporada ${{ inputs.season }}, semana ${{ inputs.week }}"
+          git push
