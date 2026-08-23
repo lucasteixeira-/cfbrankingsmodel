@@ -1,0 +1,23 @@
+# Segredos locais (a chave já está como Secret do Actions, isso é só backup local)
+.env
+
+# Ambiente Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Saída de rodadas locais na raiz do projeto — a pasta data/ é versionada de
+# propósito (é o histórico salvo pelo Actions/Monta-Ranking), isso aqui é só
+# pra não sujar o repo com testes soltos rodados fora dela
+/LucasTop25_*.csv
+/LucasTop25_*.txt
+/*_log.txt
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
