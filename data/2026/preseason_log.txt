@@ -1,0 +1,115 @@
+Usando chave: dDOw...G3my (64 caracteres)
+
+Calculando índice — temporada 2026, semana 1...
+
+(modo pré-temporada — só OSP, sem nenhum componente de currículo)
+
+389 jogos carregados até a semana 1 (0 já com placar).
+SRS atual: 0 times | Elo atual: 0 times (0 é normal na pré-temporada — o script usa fallback da temporada anterior)
+Top 50 pré-temporada (por OSP):
+ rank           team      osp
+    1        Indiana 2.352846
+    2     Ohio State 2.322606
+    3     Notre Dame 2.251706
+    4         Oregon 2.068455
+    5        Georgia 1.907273
+    6     Texas Tech 1.853349
+    7          Miami 1.842587
+    8          Texas 1.698477
+    9      Texas A&M 1.555162
+   10       Ole Miss 1.551360
+   11            USC 1.435852
+   12        Alabama 1.430520
+   13     Penn State 1.425844
+   14           Utah 1.371198
+   15       Oklahoma 1.357413
+   16           Iowa 1.319112
+   17     Washington 1.307550
+   18      Tennessee 1.246938
+   19       Michigan 1.244711
+   20            LSU 1.206996
+   21     Vanderbilt 1.195086
+   22            BYU 1.190877
+   23            SMU 1.157618
+   24       Missouri 1.109887
+   25        Clemson 1.034469
+   26     Louisville 0.977880
+   27         Auburn 0.929751
+   28 South Carolina 0.897207
+   29        Arizona 0.895558
+   30        Florida 0.884944
+   31            TCU 0.802227
+   32       Illinois 0.797713
+   33       Virginia 0.795930
+   34  James Madison 0.771262
+   35   Kansas State 0.759648
+   36  Florida State 0.728275
+   37     Pittsburgh 0.724167
+   38  South Florida 0.683496
+   39       Nebraska 0.630901
+   40   Georgia Tech 0.621749
+   41       NC State 0.608323
+   42  Arizona State 0.599942
+   43           Duke 0.593023
+   44        Houston 0.584462
+   45    Boise State 0.550580
+   46       Arkansas 0.535182
+   47     Iowa State 0.502351
+   48   Northwestern 0.484656
+   49    Wake Forest 0.445697
+   50           UNLV 0.435182
+
+--- Cole no Monta-Ranking (Top 50) ---
+1|Indiana|Big Ten|2.352846
+2|Ohio State|Big Ten|2.322606
+3|Notre Dame|FBS Independents|2.251706
+4|Oregon|Big Ten|2.068455
+5|Georgia|SEC|1.907273
+6|Texas Tech|Big 12|1.853349
+7|Miami|ACC|1.842587
+8|Texas|SEC|1.698477
+9|Texas A&M|SEC|1.555162
+10|Ole Miss|SEC|1.551360
+11|USC|Big Ten|1.435852
+12|Alabama|SEC|1.430520
+13|Penn State|Big Ten|1.425844
+14|Utah|Big 12|1.371198
+15|Oklahoma|SEC|1.357413
+16|Iowa|Big Ten|1.319112
+17|Washington|Big Ten|1.307550
+18|Tennessee|SEC|1.246938
+19|Michigan|Big Ten|1.244711
+20|LSU|SEC|1.206996
+21|Vanderbilt|SEC|1.195086
+22|BYU|Big 12|1.190877
+23|SMU|ACC|1.157618
+24|Missouri|SEC|1.109887
+25|Clemson|ACC|1.034469
+26|Louisville|ACC|0.977880
+27|Auburn|SEC|0.929751
+28|South Carolina|SEC|0.897207
+29|Arizona|Big 12|0.895558
+30|Florida|SEC|0.884944
+31|TCU|Big 12|0.802227
+32|Illinois|Big Ten|0.797713
+33|Virginia|ACC|0.795930
+34|James Madison|Sun Belt|0.771262
+35|Kansas State|Big 12|0.759648
+36|Florida State|ACC|0.728275
+37|Pittsburgh|ACC|0.724167
+38|South Florida|American Athletic|0.683496
+39|Nebraska|Big Ten|0.630901
+40|Georgia Tech|ACC|0.621749
+41|NC State|ACC|0.608323
+42|Arizona State|Big 12|0.599942
+43|Duke|ACC|0.593023
+44|Houston|Big 12|0.584462
+45|Boise State|Pac-12|0.550580
+46|Arkansas|SEC|0.535182
+47|Iowa State|Big 12|0.502351
+48|Northwestern|Big Ten|0.484656
+49|Wake Forest|ACC|0.445697
+50|UNLV|Mountain West|0.435182
+--- fim do bloco ---
+
+Salvo em: LucasTop25_preseason_2026.csv

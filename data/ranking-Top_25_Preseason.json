@@ -1,0 +1,127 @@
+[
+  {
+    "rank": 1,
+    "team": "Indiana",
+    "conf": "Big Ten"
+  },
+  {
+    "rank": 2,
+    "team": "Notre Dame",
+    "conf": "FBS Independents"
+  },
+  {
+    "rank": 3,
+    "team": "Ohio State",
+    "conf": "Big Ten"
+  },
+  {
+    "rank": 4,
+    "team": "Oregon",
+    "conf": "Big Ten"
+  },
+  {
+    "rank": 5,
+    "team": "Miami",
+    "conf": "ACC"
+  },
+  {
+    "rank": 6,
+    "team": "Texas",
+    "conf": "SEC"
+  },
+  {
+    "rank": 7,
+    "team": "Georgia",
+    "conf": "SEC"
+  },
+  {
+    "rank": 8,
+    "team": "Texas Tech",
+    "conf": "Big 12"
+  },
+  {
+    "rank": 9,
+    "team": "Texas A&M",
+    "conf": "SEC"
+  },
+  {
+    "rank": 10,
+    "team": "Oklahoma",
+    "conf": "SEC"
+  },
+  {
+    "rank": 11,
+    "team": "USC",
+    "conf": "Big Ten"
+  },
+  {
+    "rank": 12,
+    "team": "Ole Miss",
+    "conf": "SEC"
+  },
+  {
+    "rank": 13,
+    "team": "Alabama",
+    "conf": "SEC"
+  },
+  {
+    "rank": 14,
+    "team": "Penn State",
+    "conf": "Big Ten"
+  },
+  {
+    "rank": 15,
+    "team": "Utah",
+    "conf": "Big 12"
+  },
+  {
+    "rank": 16,
+    "team": "BYU",
+    "conf": "Big 12"
+  },
+  {
+    "rank": 17,
+    "team": "Michigan",
+    "conf": "Big Ten"
+  },
+  {
+    "rank": 18,
+    "team": "LSU",
+    "conf": "SEC"
+  },
+  {
+    "rank": 19,
+    "team": "Washington",
+    "conf": "Big Ten"
+  },
+  {
+    "rank": 20,
+    "team": "SMU",
+    "conf": "ACC"
+  },
+  {
+    "rank": 21,
+    "team": "Iowa",
+    "conf": "Big Ten"
+  },
+  {
+    "rank": 22,
+    "team": "Missouri",
+    "conf": "SEC"
+  },
+  {
+    "rank": 23,
+    "team": "Louisville",
+    "conf": "ACC"
+  },
+  {
+    "rank": 24,
+    "team": "Houston",
+    "conf": "Big 12"
+  },
+  {
+    "rank": 25,
+    "team": "South Carolina",
+    "conf": "SEC"
+  }
+]
