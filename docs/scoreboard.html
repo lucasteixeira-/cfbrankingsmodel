@@ -421,6 +421,39 @@
 
   // ---------- Carregar rankings salvos no GitHub (leitura pública, sem token) ----------
   const GH_REPO_KEY = 'lt25_gh_repo';
+  const fileCache = {};
+
+  // Aceita tanto o formato novo ({ savedAt, teams }) quanto arquivos antigos
+  // salvos antes dessa mudança (array simples de times, sem timestamp).
+  function normalizeSavedData(raw){
+    if(Array.isArray(raw)) return { savedAt: null, teams: raw };
+    return { savedAt: raw.savedAt || null, teams: raw.teams || [] };
+  }
+
+  function formatDate(iso){
+    if(!iso) return '';
+    const d = new Date(iso);
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${mm}/${dd}/${d.getFullYear()}`;
+  }
+
+  function applyLoadedData(filename){
+    const data = fileCache[filename];
+    if(!data) return;
+    const rows = document.querySelectorAll('.row-card');
+    data.teams.forEach((item, i) => {
+      if(i >= rows.length) return;
+      const cells = rows[i].children;
+      cells[1].textContent = item.team || '';
+      cells[2].textContent = item.conf || '';
+    });
+    const label = filename.replace(/^ranking-/, '').replace(/\.json$/, '');
+    const fields = document.querySelectorAll('.clock-field [contenteditable]');
+    if(fields[0]) fields[0].textContent = label;
+    if(fields[1] && data.savedAt) fields[1].textContent = formatDate(data.savedAt);
+    document.getElementById('picker-status').textContent = `Carregado (${data.teams.length} times)`;
+  }
 
   async function populateWeekPicker(){
     const repo = localStorage.getItem(GH_REPO_KEY);
@@ -431,41 +464,59 @@
       const items = await res.json();
       const files = items.filter(f => f.type === 'file' && /^ranking-.*\.json$/.test(f.name));
       if(files.length === 0) return;
+
       const select = document.getElementById('week-picker');
-      files.forEach(f => {
+      let mostRecentFile = null;
+      let mostRecentDate = null;
+
+      for(const f of files){
+        let data = { savedAt: null, teams: [] };
+        try{
+          const r = await fetch(f.download_url);
+          data = normalizeSavedData(await r.json());
+        } catch(e){ /* arquivo com erro — ainda aparece na lista, só não vira "o mais recente" */ }
+        fileCache[f.name] = data;
+
         const opt = document.createElement('option');
         opt.value = f.name;
         opt.textContent = f.name.replace(/^ranking-/, '').replace(/\.json$/, '');
         select.appendChild(opt);
-      });
+
+        // Arquivos antigos sem savedAt contam como os mais antigos possíveis,
+        // pra nunca "vencer" um arquivo novo por engano.
+        const savedDate = data.savedAt ? new Date(data.savedAt) : new Date(0);
+        if(!mostRecentDate || savedDate > mostRecentDate){
+          mostRecentDate = savedDate;
+          mostRecentFile = f.name;
+        }
+      }
+
       document.getElementById('picker-wrap').style.display = 'flex';
+      if(mostRecentFile){
+        select.value = mostRecentFile;
+        applyLoadedData(mostRecentFile);
+      }
     } catch(e){
       // sem repo configurado ou API fora do ar — mantém o formulário vazio normal
     }
   }
 
   async function loadFromGithub(){
-    const repo = localStorage.getItem(GH_REPO_KEY);
     const filename = document.getElementById('week-picker').value;
+    if(!filename) return;
     const status = document.getElementById('picker-status');
-    if(!repo || !filename) return;
+    if(fileCache[filename]){
+      applyLoadedData(filename);
+      return;
+    }
+    const repo = localStorage.getItem(GH_REPO_KEY);
     status.textContent = 'Carregando...';
     try{
       const url = `https://raw.githubusercontent.com/${repo}/main/data/${filename}`;
       const res = await fetch(url);
       if(!res.ok){ status.textContent = 'Erro ao carregar'; return; }
-      const data = await res.json();
-      const rows = document.querySelectorAll('.row-card');
-      data.forEach((item, i) => {
-        if(i >= rows.length) return;
-        const cells = rows[i].children;
-        cells[1].textContent = item.team || '';
-        cells[2].textContent = item.conf || '';
-      });
-      const label = filename.replace(/^ranking-/, '').replace(/\.json$/, '');
-      const weekField = document.querySelectorAll('.clock-field [contenteditable]')[0];
-      if(weekField) weekField.textContent = label;
-      status.textContent = `Carregado (${data.length} times)`;
+      fileCache[filename] = normalizeSavedData(await res.json());
+      applyLoadedData(filename);
     } catch(e){
       status.textContent = 'Falha de rede';
     }
