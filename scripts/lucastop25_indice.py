@@ -400,6 +400,8 @@ def process_games(team, data, osp_lookup, quality_ref, conf_lookup):
     conf_opps = []
     mov_factors = []
     game_log = []
+    total_wins = 0
+    total_losses = 0
 
     for _, g in team_games.iterrows():
         if pd.isna(g.get("homePoints")) or pd.isna(g.get("awayPoints")):
@@ -426,6 +428,10 @@ def process_games(team, data, osp_lookup, quality_ref, conf_lookup):
                     delta += FCS_LOSS_PENALTY_P4_EXTRA
             fcs_adjustment += delta
             fcs_games_count += 1
+            if won:
+                total_wins += 1
+            else:
+                total_losses += 1
             game_log.append({
                 "semana": f"pós-{game_week}" if is_postseason else game_week,
                 "_ord": (game_week or 0) + (100 if is_postseason else 0),
@@ -494,6 +500,10 @@ def process_games(team, data, osp_lookup, quality_ref, conf_lookup):
                 score += BAD_LOSS_PENALTY
 
         game_scores.append(score)
+        if won:
+            total_wins += 1
+        else:
+            total_losses += 1
 
         # SOS conta a força do adversário mesmo em derrota, mas com desconto
         # que agora escala pela proximidade do jogo (mesma lógica do alívio
@@ -544,6 +554,7 @@ def process_games(team, data, osp_lookup, quality_ref, conf_lookup):
         "fcs_adjustment": fcs_adjustment,
         "games_played": len(game_scores),
         "total_games": len(game_scores) + fcs_games_count,
+        "record": f"{total_wins}-{total_losses}",
         "game_log": game_log,
     }
 
@@ -623,13 +634,14 @@ def compute_index(data, osp_df, week=None):
 # ---------------------------------------------------------------------------
 
 def print_paste_block(df, score_col, conf_lookup, top_n):
-    """Bloco rank|time|conferência|pontuação, pensado pra colar direto no
-    Monta-Ranking (lucastop25-tier-builder.html) — formato sem ambiguidade,
+    """Bloco rank|time|conferência|recorde|pontuação, pensado pra colar direto
+    no Monta-Ranking (lucastop25-tier-builder.html) — formato sem ambiguidade,
     já que nome de conferência tem espaço (ex: 'Big Ten')."""
     print(f"\n--- Cole no Monta-Ranking (Top {top_n}) ---")
     for _, row in df.head(top_n).iterrows():
         conf = conf_lookup.get(row["team"], "")
-        print(f"{int(row['rank'])}|{row['team']}|{conf}|{row[score_col]:.6f}")
+        record = row["record"] if "record" in row and pd.notna(row["record"]) else "0-0"
+        print(f"{int(row['rank'])}|{row['team']}|{conf}|{record}|{row[score_col]:.6f}")
     print("--- fim do bloco ---\n")
 
 def main():
@@ -723,7 +735,7 @@ def main():
         print()
 
     all_cols = [
-        "rank", "team", "indice_final", "games_played",
+        "rank", "team", "record", "indice_final", "games_played",
         "wins_score", "sos_nonconf", "sos_conf", "mov_capado", "fcs_adjustment",
         "contrib_wins", "contrib_sos_nonconf", "contrib_sos_conf", "contrib_mov", "contrib_fcs",
     ]
@@ -733,7 +745,7 @@ def main():
     print(f"\nTop {args.top}:")
     if args.detail:
         detail_cols = [
-            "rank", "team", "indice_final", "games_played",
+            "rank", "team", "record", "indice_final", "games_played",
             "wins_score", "sos_nonconf", "sos_conf", "mov_capado", "fcs_adjustment",
             "contrib_wins", "contrib_sos_nonconf", "contrib_sos_conf", "contrib_mov", "contrib_fcs",
         ]

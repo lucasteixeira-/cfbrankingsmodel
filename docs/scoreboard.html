@@ -438,16 +438,73 @@
     return `${mm}/${dd}/${d.getFullYear()}`;
   }
 
+  function buildRankMap(fileData){
+    const map = {};
+    (fileData && fileData.teams ? fileData.teams : []).forEach(t => { map[t.team] = t.rank; });
+    return map;
+  }
+
+  function findPreseasonFile(excluding){
+    return Object.keys(fileCache).find(n => n !== excluding && /preseason/i.test(n)) || null;
+  }
+
+  function getOrderedFilesBySavedAt(){
+    return Object.entries(fileCache)
+      .map(([name, data]) => ({ name, savedAt: data.savedAt ? new Date(data.savedAt) : new Date(0) }))
+      .sort((a, b) => b.savedAt - a.savedAt);
+  }
+
+  // Define o texto bruto de uma célula de movimento e reaproveita a mesma
+  // formatação/coloração usada na edição manual (seta, cor, "NEW" etc.)
+  function setMovCell(cell, rawValue){
+    const valueSpan = cell.querySelector('.mov-value');
+    valueSpan.textContent = (rawValue === null || rawValue === undefined) ? '' : String(rawValue);
+    reformatMovValue(cell);
+    refreshMovCell(cell);
+  }
+
   function applyLoadedData(filename){
     const data = fileCache[filename];
     if(!data) return;
     const rows = document.querySelectorAll('.row-card');
+
+    const isPreseasonFile = /preseason/i.test(filename);
+    const ordered = getOrderedFilesBySavedAt();
+    const idx = ordered.findIndex(f => f.name === filename);
+    const previousName = (!isPreseasonFile && idx >= 0 && idx + 1 < ordered.length) ? ordered[idx + 1].name : null;
+    const preseasonName = isPreseasonFile ? null : findPreseasonFile(filename);
+
+    const prevMap = previousName ? buildRankMap(fileCache[previousName]) : {};
+    const preMap = preseasonName ? buildRankMap(fileCache[preseasonName]) : {};
+
     data.teams.forEach((item, i) => {
       if(i >= rows.length) return;
       const cells = rows[i].children;
+      const currentRank = item.rank || (i + 1);
+
       cells[1].textContent = item.team || '';
       cells[2].textContent = item.conf || '';
+      cells[3].textContent = item.record || '';
+
+      if(isPreseasonFile){
+        // Convenção da pré-temporada: Pré-T. = a própria posição; sem semana
+        // anterior nem temporada anterior pra comparar.
+        cells[4].textContent = '';
+        setMovCell(cells[5], null);
+        cells[6].textContent = currentRank;
+        setMovCell(cells[7], null);
+        return;
+      }
+
+      const prevRank = prevMap[item.team];
+      cells[4].textContent = prevRank !== undefined ? prevRank : '';
+      setMovCell(cells[5], prevRank !== undefined ? (prevRank - currentRank) : (previousName ? 'new' : null));
+
+      const preRank = preMap[item.team];
+      cells[6].textContent = preRank !== undefined ? preRank : '';
+      setMovCell(cells[7], preRank !== undefined ? (preRank - currentRank) : (preseasonName ? 'new' : null));
     });
+
     const label = filename.replace(/^ranking-/, '').replace(/\.json$/, '');
     const fields = document.querySelectorAll('.clock-field [contenteditable]');
     if(fields[0]) fields[0].textContent = label;
