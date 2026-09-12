@@ -395,6 +395,7 @@ def process_games(team, data, osp_lookup, quality_ref, conf_lookup):
 
     game_scores = []
     fcs_adjustment = 0.0
+    fcs_games_count = 0
     non_conf_opps = []
     conf_opps = []
     mov_factors = []
@@ -424,6 +425,7 @@ def process_games(team, data, osp_lookup, quality_ref, conf_lookup):
                 if conf_lookup.get(team) in P4_CONFERENCES or team in P4_INDEPENDENTS:
                     delta += FCS_LOSS_PENALTY_P4_EXTRA
             fcs_adjustment += delta
+            fcs_games_count += 1
             game_log.append({
                 "semana": f"pós-{game_week}" if is_postseason else game_week,
                 "_ord": (game_week or 0) + (100 if is_postseason else 0),
@@ -541,6 +543,7 @@ def process_games(team, data, osp_lookup, quality_ref, conf_lookup):
         "mov_capado": np.mean(mov_factors) if mov_factors else 0.0,
         "fcs_adjustment": fcs_adjustment,
         "games_played": len(game_scores),
+        "total_games": len(game_scores) + fcs_games_count,
         "game_log": game_log,
     }
 
@@ -579,7 +582,10 @@ def compute_index(data, osp_df, week=None):
         results.append(r)
 
     df = pd.DataFrame(results)
-    df = df[df["games_played"] > 0].copy()
+    # Usa total_games (FBS + FCS) pra decidir quem já jogou, não games_played
+    # (que é só FBS) — sem isso, um time cujo único jogo até agora foi contra
+    # FCS some do ranking inteiro, mesmo tendo realmente jogado.
+    df = df[df["total_games"] > 0].copy()
 
     if df.empty:
         print("Nenhum time com jogos concluídos ainda nesta semana.")
