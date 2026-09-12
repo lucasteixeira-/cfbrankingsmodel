@@ -1,130 +1,155 @@
 {
-  "savedAt": "2026-09-12T02:35:40.910Z",
+  "savedAt": "2026-09-12T02:50:54.995Z",
   "teams": [
     {
       "rank": 1,
       "team": "Indiana",
-      "conf": "Big Ten"
+      "conf": "Big Ten",
+      "record": "1-0"
     },
     {
       "rank": 2,
       "team": "Ohio State",
-      "conf": "Big Ten"
+      "conf": "Big Ten",
+      "record": "1-0"
     },
     {
       "rank": 3,
       "team": "Notre Dame",
-      "conf": "FBS Independents"
+      "conf": "FBS Independents",
+      "record": "1-0"
     },
     {
       "rank": 4,
       "team": "Oregon",
-      "conf": "Big Ten"
+      "conf": "Big Ten",
+      "record": "1-0"
     },
     {
       "rank": 5,
       "team": "Miami",
-      "conf": "ACC"
+      "conf": "ACC",
+      "record": "1-0"
     },
     {
       "rank": 6,
       "team": "Texas",
-      "conf": "SEC"
+      "conf": "SEC",
+      "record": "1-0"
     },
     {
       "rank": 7,
       "team": "Georgia",
-      "conf": "SEC"
+      "conf": "SEC",
+      "record": "1-0"
     },
     {
       "rank": 8,
       "team": "Texas Tech",
-      "conf": "Big 12"
+      "conf": "Big 12",
+      "record": "1-0"
     },
     {
       "rank": 9,
       "team": "Ole Miss",
-      "conf": "SEC"
+      "conf": "SEC",
+      "record": "1-0"
     },
     {
       "rank": 10,
       "team": "Texas A&M",
-      "conf": "SEC"
+      "conf": "SEC",
+      "record": "1-0"
     },
     {
       "rank": 11,
       "team": "Alabama",
-      "conf": "SEC"
+      "conf": "SEC",
+      "record": "1-0"
     },
     {
       "rank": 12,
       "team": "Oklahoma",
-      "conf": "SEC"
+      "conf": "SEC",
+      "record": "1-0"
     },
     {
       "rank": 13,
       "team": "LSU",
-      "conf": "SEC"
+      "conf": "SEC",
+      "record": "1-0"
     },
     {
       "rank": 14,
       "team": "Penn State",
-      "conf": "Big Ten"
+      "conf": "Big Ten",
+      "record": "1-0"
     },
     {
       "rank": 15,
       "team": "USC",
-      "conf": "Big Ten"
+      "conf": "Big Ten",
+      "record": "2-0"
     },
     {
       "rank": 16,
       "team": "Utah",
-      "conf": "Big 12"
+      "conf": "Big 12",
+      "record": "1-0"
     },
     {
       "rank": 17,
       "team": "BYU",
-      "conf": "Big 12"
+      "conf": "Big 12",
+      "record": "1-0"
     },
     {
       "rank": 18,
       "team": "Washington",
-      "conf": "Big Ten"
+      "conf": "Big Ten",
+      "record": "1-0"
     },
     {
       "rank": 19,
       "team": "SMU",
-      "conf": "ACC"
+      "conf": "ACC",
+      "record": "1-0"
     },
     {
       "rank": 20,
       "team": "Iowa",
-      "conf": "Big Ten"
+      "conf": "Big Ten",
+      "record": "1-0"
     },
     {
       "rank": 21,
       "team": "Virginia",
-      "conf": "ACC"
+      "conf": "ACC",
+      "record": "1-0"
     },
     {
       "rank": 22,
       "team": "Missouri",
-      "conf": "SEC"
+      "conf": "SEC",
+      "record": "1-0"
     },
     {
       "rank": 23,
-      "team": "Arizona",
-      "conf": "Big 12"
+      "team": "Auburn",
+      "conf": "SEC",
+      "record": "1-0"
     },
     {
       "rank": 24,
-      "team": "Auburn",
-      "conf": "SEC"
+      "team": "Arizona",
+      "conf": "Big 12",
+      "record": "1-0"
     },
     {
       "rank": 25,
       "team": "Louisville",
-      "conf": "ACC"
+      "conf": "ACC",
+      "record": "0-1"
     }
   ]
 }
