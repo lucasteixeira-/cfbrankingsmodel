@@ -162,6 +162,19 @@
   .col-labels span:not(:first-child){ text-align:center; }
   .col-labels span:nth-child(2){ text-align:left; }
 
+  /* Colunas de Pré-T./Szn Mov. escondidas por padrão — só fazem sentido
+     perto do fim da temporada, não toda semana */
+  .hide-preseason .col-labels,
+  .hide-preseason .row-card{
+    grid-template-columns: 64px 1.7fr 0.9fr 0.65fr 0.55fr 0.75fr;
+  }
+  .hide-preseason .col-labels span:nth-child(7),
+  .hide-preseason .col-labels span:nth-child(8),
+  .hide-preseason .row-card > *:nth-child(7),
+  .hide-preseason .row-card > *:nth-child(8){
+    display: none;
+  }
+
   .rows-wrap{ overflow-x: auto; }
   .rows{
     display:flex;
@@ -275,7 +288,7 @@
 </head>
 <body>
 
-<div class="page" id="capture-area">
+<div class="page hide-preseason" id="capture-area">
 
   <div class="header-bar">
     <div class="brand-block">
@@ -300,6 +313,7 @@
       <button class="btn" onclick="exportPNG()">Download PNG</button>
       <button class="btn" onclick="exportPDF()">Download PDF</button>
       <button class="btn" onclick="exportXLSX()">Download Spreadsheet</button>
+      <button class="btn" onclick="togglePreseasonColumns()" id="preseason-toggle-btn">Show Preseason Comparison</button>
     </div>
   </div>
 
@@ -703,6 +717,13 @@
     syncHiddenTable();
     const wb = XLSX.utils.table_to_book(document.getElementById('ranking-table'), { sheet: getWeekLabel() });
     XLSX.writeFile(wb, `LucasTop25_${getWeekLabel()}.xlsx`);
+  }
+
+  function togglePreseasonColumns(){
+    const page = document.getElementById('capture-area');
+    const btn = document.getElementById('preseason-toggle-btn');
+    const hidden = page.classList.toggle('hide-preseason');
+    btn.textContent = hidden ? 'Show Preseason Comparison' : 'Hide Preseason Comparison';
   }
 </script>
 
