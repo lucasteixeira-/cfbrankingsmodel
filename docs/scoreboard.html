@@ -324,6 +324,8 @@
     <div class="rows" id="ranking-body"></div>
   </div>
 
+  <p id="dropped-line" style="font-size: 12px; color: var(--ink-soft); font-style: italic; margin: 14px 4px 0; display: none;"></p>
+
   <footer>
     <p>LucasTop25 · Personal support index, based on resume/merit adjusted for strength of schedule.</p>
   </footer>
@@ -504,6 +506,20 @@
       cells[6].textContent = preRank !== undefined ? preRank : '';
       setMovCell(cells[7], preRank !== undefined ? (preRank - currentRank) : (preseasonName ? 'new' : null));
     });
+
+    const droppedLine = document.getElementById('dropped-line');
+    if(!isPreseasonFile && previousName){
+      const currentNames = new Set(data.teams.map(t => t.team));
+      const dropped = Object.keys(prevMap).filter(name => !currentNames.has(name));
+      if(dropped.length > 0){
+        droppedLine.textContent = `Dropped: ${dropped.join(', ')}`;
+        droppedLine.style.display = 'block';
+      } else {
+        droppedLine.style.display = 'none';
+      }
+    } else {
+      droppedLine.style.display = 'none';
+    }
 
     const label = filename.replace(/^ranking-/, '').replace(/\.json$/, '');
     const fields = document.querySelectorAll('.clock-field [contenteditable]');
