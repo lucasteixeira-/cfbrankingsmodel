@@ -1,0 +1,155 @@
+{
+  "savedAt": "2026-09-20T14:36:44.594Z",
+  "teams": [
+    {
+      "rank": 1,
+      "team": "Texas",
+      "conf": "SEC",
+      "record": "3-0"
+    },
+    {
+      "rank": 2,
+      "team": "Ole Miss",
+      "conf": "SEC",
+      "record": "3-0"
+    },
+    {
+      "rank": 3,
+      "team": "Indiana",
+      "conf": "Big Ten",
+      "record": "3-0"
+    },
+    {
+      "rank": 4,
+      "team": "Notre Dame",
+      "conf": "FBS Independents",
+      "record": "3-0"
+    },
+    {
+      "rank": 5,
+      "team": "Miami",
+      "conf": "ACC",
+      "record": "3-0"
+    },
+    {
+      "rank": 6,
+      "team": "Georgia",
+      "conf": "SEC",
+      "record": "3-0"
+    },
+    {
+      "rank": 7,
+      "team": "Ohio State",
+      "conf": "Big Ten",
+      "record": "2-1"
+    },
+    {
+      "rank": 8,
+      "team": "Alabama",
+      "conf": "SEC",
+      "record": "3-0"
+    },
+    {
+      "rank": 9,
+      "team": "Texas Tech",
+      "conf": "Big 12",
+      "record": "3-0"
+    },
+    {
+      "rank": 10,
+      "team": "BYU",
+      "conf": "Big 12",
+      "record": "3-0"
+    },
+    {
+      "rank": 11,
+      "team": "Louisville",
+      "conf": "ACC",
+      "record": "2-1"
+    },
+    {
+      "rank": 12,
+      "team": "Utah",
+      "conf": "Big 12",
+      "record": "3-0"
+    },
+    {
+      "rank": 13,
+      "team": "Florida",
+      "conf": "SEC",
+      "record": "3-0"
+    },
+    {
+      "rank": 14,
+      "team": "Tennessee",
+      "conf": "SEC",
+      "record": "3-0"
+    },
+    {
+      "rank": 15,
+      "team": "Penn State",
+      "conf": "Big Ten",
+      "record": "3-0"
+    },
+    {
+      "rank": 16,
+      "team": "LSU",
+      "conf": "SEC",
+      "record": "2-1"
+    },
+    {
+      "rank": 17,
+      "team": "USC",
+      "conf": "Big Ten",
+      "record": "4-0"
+    },
+    {
+      "rank": 18,
+      "team": "Iowa",
+      "conf": "Big Ten",
+      "record": "3-0"
+    },
+    {
+      "rank": 19,
+      "team": "Mississippi State",
+      "conf": "SEC",
+      "record": "3-0"
+    },
+    {
+      "rank": 20,
+      "team": "Missouri",
+      "conf": "SEC",
+      "record": "3-0"
+    },
+    {
+      "rank": 21,
+      "team": "Michigan",
+      "conf": "Big Ten",
+      "record": "3-0"
+    },
+    {
+      "rank": 22,
+      "team": "Kansas State",
+      "conf": "Big 12",
+      "record": "3-0"
+    },
+    {
+      "rank": 23,
+      "team": "Duke",
+      "conf": "ACC",
+      "record": "3-0"
+    },
+    {
+      "rank": 24,
+      "team": "Pittsburgh",
+      "conf": "ACC",
+      "record": "3-0"
+    },
+    {
+      "rank": 25,
+      "team": "James Madison",
+      "conf": "Sun Belt",
+      "record": "3-0"
+    }
+  ]
+}
