@@ -1,0 +1,155 @@
+{
+  "savedAt": "2026-09-27T15:23:08.921Z",
+  "teams": [
+    {
+      "rank": 1,
+      "team": "Texas",
+      "conf": "SEC",
+      "record": "4-0"
+    },
+    {
+      "rank": 2,
+      "team": "Notre Dame",
+      "conf": "FBS Independents",
+      "record": "4-0"
+    },
+    {
+      "rank": 3,
+      "team": "Indiana",
+      "conf": "Big Ten",
+      "record": "4-0"
+    },
+    {
+      "rank": 4,
+      "team": "Georgia",
+      "conf": "SEC",
+      "record": "4-0"
+    },
+    {
+      "rank": 5,
+      "team": "Miami",
+      "conf": "ACC",
+      "record": "4-0"
+    },
+    {
+      "rank": 6,
+      "team": "Ohio State",
+      "conf": "Big Ten",
+      "record": "3-1"
+    },
+    {
+      "rank": 7,
+      "team": "Alabama",
+      "conf": "SEC",
+      "record": "4-0"
+    },
+    {
+      "rank": 8,
+      "team": "Florida",
+      "conf": "SEC",
+      "record": "4-0"
+    },
+    {
+      "rank": 9,
+      "team": "BYU",
+      "conf": "Big 12",
+      "record": "3-0"
+    },
+    {
+      "rank": 10,
+      "team": "Texas Tech",
+      "conf": "Big 12",
+      "record": "4-0"
+    },
+    {
+      "rank": 11,
+      "team": "Utah",
+      "conf": "Big 12",
+      "record": "4-0"
+    },
+    {
+      "rank": 12,
+      "team": "Iowa",
+      "conf": "Big Ten",
+      "record": "4-0"
+    },
+    {
+      "rank": 13,
+      "team": "Ole Miss",
+      "conf": "SEC",
+      "record": "3-1"
+    },
+    {
+      "rank": 14,
+      "team": "LSU",
+      "conf": "SEC",
+      "record": "3-1"
+    },
+    {
+      "rank": 15,
+      "team": "Mississippi State",
+      "conf": "SEC",
+      "record": "4-0"
+    },
+    {
+      "rank": 16,
+      "team": "Oklahoma State",
+      "conf": "Big 12",
+      "record": "3-1"
+    },
+    {
+      "rank": 17,
+      "team": "Oregon",
+      "conf": "Big Ten",
+      "record": "3-1"
+    },
+    {
+      "rank": 18,
+      "team": "Tennessee",
+      "conf": "SEC",
+      "record": "3-1"
+    },
+    {
+      "rank": 19,
+      "team": "Boise State",
+      "conf": "Pac-12",
+      "record": "3-1"
+    },
+    {
+      "rank": 20,
+      "team": "Cincinnati",
+      "conf": "Big 12",
+      "record": "4-0"
+    },
+    {
+      "rank": 21,
+      "team": "Wisconsin",
+      "conf": "Big Ten",
+      "record": "3-1"
+    },
+    {
+      "rank": 22,
+      "team": "UCLA",
+      "conf": "Big Ten",
+      "record": "4-0"
+    },
+    {
+      "rank": 23,
+      "team": "Duke",
+      "conf": "ACC",
+      "record": "4-0"
+    },
+    {
+      "rank": 24,
+      "team": "Pittsburgh",
+      "conf": "ACC",
+      "record": "4-0"
+    },
+    {
+      "rank": 25,
+      "team": "Nebraska",
+      "conf": "Big Ten",
+      "record": "4-0"
+    }
+  ]
+}
