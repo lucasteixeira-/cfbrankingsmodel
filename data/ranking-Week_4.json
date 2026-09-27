@@ -1,5 +1,5 @@
 {
-  "savedAt": "2026-09-27T15:23:08.921Z",
+  "savedAt": "2026-09-27T15:23:29.194Z",
   "teams": [
     {
       "rank": 1,
@@ -123,15 +123,15 @@
     },
     {
       "rank": 21,
-      "team": "Wisconsin",
-      "conf": "Big Ten",
-      "record": "3-1"
-    },
-    {
-      "rank": 22,
       "team": "UCLA",
       "conf": "Big Ten",
       "record": "4-0"
+    },
+    {
+      "rank": 22,
+      "team": "Wisconsin",
+      "conf": "Big Ten",
+      "record": "3-1"
     },
     {
       "rank": 23,
