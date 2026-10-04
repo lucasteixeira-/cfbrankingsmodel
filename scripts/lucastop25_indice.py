@@ -553,6 +553,11 @@ def process_games(team, data, osp_lookup, quality_ref, conf_lookup):
         "mov_capado": np.mean(mov_factors) if mov_factors else 0.0,
         "fcs_adjustment": fcs_adjustment,
         "games_played": len(game_scores),
+        # Quantos jogos FBS alimentam cada média de SOS (jogos FCS ficam de fora).
+        # Para Independentes (ex: Notre Dame), o calendário inteiro conta nos
+        # dois buckets, então os dois números coincidem com o total.
+        "conf_games": len(conf_opps),
+        "nonconf_games": len(non_conf_opps),
         "total_games": len(game_scores) + fcs_games_count,
         "record": f"{total_wins}-{total_losses}",
         "game_log": game_log,
@@ -735,7 +740,7 @@ def main():
         print()
 
     all_cols = [
-        "rank", "team", "record", "indice_final", "games_played",
+        "rank", "team", "record", "indice_final", "games_played", "nonconf_games", "conf_games",
         "wins_score", "sos_nonconf", "sos_conf", "mov_capado", "fcs_adjustment",
         "contrib_wins", "contrib_sos_nonconf", "contrib_sos_conf", "contrib_mov", "contrib_fcs",
     ]
@@ -745,7 +750,7 @@ def main():
     print(f"\nTop {args.top}:")
     if args.detail:
         detail_cols = [
-            "rank", "team", "record", "indice_final", "games_played",
+            "rank", "team", "record", "indice_final", "games_played", "nonconf_games", "conf_games",
             "wins_score", "sos_nonconf", "sos_conf", "mov_capado", "fcs_adjustment",
             "contrib_wins", "contrib_sos_nonconf", "contrib_sos_conf", "contrib_mov", "contrib_fcs",
         ]
