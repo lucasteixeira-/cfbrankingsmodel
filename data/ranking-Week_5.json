@@ -1,5 +1,5 @@
 {
-  "savedAt": "2026-10-04T16:41:47.856Z",
+  "savedAt": "2026-10-04T16:45:03.829Z",
   "teams": [
     {
       "rank": 1,
@@ -63,56 +63,56 @@
     },
     {
       "rank": 11,
-      "team": "Mississippi State",
-      "conf": "SEC",
-      "record": "4-1"
-    },
-    {
-      "rank": 12,
       "team": "Missouri",
       "conf": "SEC",
       "record": "4-1"
     },
     {
-      "rank": 13,
+      "rank": 12,
       "team": "Florida",
       "conf": "SEC",
       "record": "4-1"
     },
     {
-      "rank": 14,
+      "rank": 13,
       "team": "Ole Miss",
       "conf": "SEC",
       "record": "3-1"
     },
     {
-      "rank": 15,
+      "rank": 14,
       "team": "LSU",
       "conf": "SEC",
       "record": "4-1"
     },
     {
-      "rank": 16,
+      "rank": 15,
       "team": "Oklahoma State",
       "conf": "Big 12",
       "record": "3-1"
     },
     {
-      "rank": 17,
+      "rank": 16,
       "team": "Oregon",
       "conf": "Big Ten",
       "record": "3-1"
     },
     {
-      "rank": 18,
+      "rank": 17,
       "team": "Tennessee",
       "conf": "SEC",
       "record": "4-1"
     },
     {
-      "rank": 19,
+      "rank": 18,
       "team": "Boise State",
       "conf": "Pac-12",
+      "record": "4-1"
+    },
+    {
+      "rank": 19,
+      "team": "Mississippi State",
+      "conf": "SEC",
       "record": "4-1"
     },
     {
