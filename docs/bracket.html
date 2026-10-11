@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LucasTop25 — Playoff Bracket</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B1220;
+    --panel: #121B2E;
+    --panel-alt: #16233A;
+    --ink: #E8EAF0;
+    --ink-soft: #8A96AC;
+    --amber: #E8A33D;
+    --amber-soft: rgba(232, 163, 61, 0.14);
+    --line: #223049;
+    --wire: #3A4D6E;
+    --radius: 10px;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 500px at 15% -10%, rgba(232,163,61,0.08), transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page{ max-width: 1180px; margin: 0 auto; padding: 36px 20px 56px; }
+
+  /* ---------- Header (same as scoreboard) ---------- */
+  .header-bar{
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 20px 24px; display:flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px; position: relative; overflow: hidden;
+  }
+  .header-bar::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width: 4px;
+    background: linear-gradient(180deg, var(--amber), transparent);
+  }
+  .brand-block{ padding-left: 8px; }
+  .eyebrow{
+    font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px;
+  }
+  .wordmark{
+    font-family: 'Big Shoulders Display', sans-serif; font-weight: 800;
+    font-size: clamp(30px, 5vw, 42px); letter-spacing: 0.5px; color: var(--ink);
+    line-height: 0.95; text-transform: uppercase;
+  }
+  .wordmark span{ color: var(--amber); }
+  .clock-fields{ display:flex; gap: 14px; }
+  .clock-field{
+    background: var(--panel-alt); border: 1px solid var(--line); border-radius: 6px;
+    padding: 8px 14px; text-align:center; min-width: 88px;
+  }
+  .clock-field label{
+    display:block; font-family:'Space Mono', monospace; font-size: 9px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px;
+  }
+  .clock-field [contenteditable]{
+    font-family: 'Space Mono', monospace; font-size: 15px; font-weight: 700; color: var(--amber); outline: none;
+  }
+  [contenteditable]{ outline: none; }
+  [contenteditable]:focus{ background: rgba(232,163,61,0.12); border-radius: 4px; }
+
+  /* ---------- Toolbar ---------- */
+  .subline{
+    display:flex; justify-content: space-between; align-items:center;
+    padding: 18px 4px 16px; flex-wrap: wrap; gap: 10px;
+  }
+  .subline p{ margin:0; font-size: 12px; color: var(--ink-soft); }
+  .toolbar{ display:flex; gap: 8px; flex-wrap: wrap; }
+  .btn{
+    font-family: 'Work Sans', sans-serif; font-weight: 600; font-size: 12.5px; letter-spacing: 0.3px;
+    color: var(--ink); background: transparent; border: 1.5px solid var(--line); border-radius: 999px;
+    padding: 8px 16px; cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover{ border-color: var(--amber); color: var(--amber); background: var(--amber-soft); }
+  .btn:focus-visible{ outline: 2px solid var(--amber); outline-offset: 2px; }
+
+  #picker-wrap{ display:none; align-items:center; gap:8px; margin-bottom:16px; flex-wrap: wrap; }
+  #picker-wrap .lbl{
+    font-family:'Space Mono', monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-soft);
+  }
+  #week-picker{
+    background:var(--panel-alt); border:1px solid var(--line); color:var(--ink); border-radius:6px;
+    padding:6px 8px; font-family:'Space Mono', monospace; font-size:12px;
+  }
+  #picker-status{ font-size:11px; color:var(--ink-soft); }
+
+  /* ---------- Bracket ---------- */
+  .bracket-wrap{
+    overflow-x: auto;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 24px 26px;
+  }
+  .bracket{ position: relative; width: 1072px; height: 612px; margin: 0 auto; }
+  .bracket svg{ position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; overflow: visible; }
+  .bracket svg path{ fill:none; stroke: var(--wire); stroke-width: 1.5; }
+
+  .round-label{
+    position:absolute; top:0; width: 232px;
+    font-family:'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .round-label small{ display:block; font-size: 9px; letter-spacing: 0.8px; text-transform:none; color: var(--neutral, #5C6B82); margin-top: 3px; }
+
+  .game{ position:absolute; width: 232px; }
+  .slot{
+    --tc: #5C6B82;
+    height: 52px; display:flex; align-items:center; gap: 10px;
+    background: var(--panel-alt);
+    border: 1px solid var(--line);
+    padding: 0 10px 0 0;
+    position: relative;
+    transition: border-color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+  }
+  .slot + .slot{ margin-top: -1px; }
+  .slot:first-child{ border-radius: 8px 8px 0 0; }
+  .slot:last-child{ border-radius: 0 0 8px 8px; }
+  .slot::before{
+    content:""; position:absolute; left:0; top:-1px; bottom:-1px; width:4px; background: var(--tc);
+  }
+  .slot:first-child::before{ border-top-left-radius: 8px; top:-1px; }
+  .slot:last-child::before{ border-bottom-left-radius: 8px; bottom:-1px; }
+  .slot.empty::before{ background: var(--line); }
+  .slot.ready{ cursor:pointer; }
+  .slot.ready:hover{ border-color: rgba(232,163,61,0.6); background: #1B2B47; z-index: 2; }
+  .slot.is-winner{ border-color: var(--amber); background: var(--amber-soft); z-index: 1; }
+  .slot.is-loser{ opacity: 0.45; }
+
+  .seed-box{
+    font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 17px; color: var(--amber);
+    width: 26px; margin-left: 14px; text-align:center; font-variant-numeric: tabular-nums; flex: none;
+  }
+  .who{ min-width:0; display:flex; flex-direction:column; gap: 2px; }
+  .who .name{ font-weight: 600; font-size: 14px; color: var(--ink); white-space: nowrap; overflow:hidden; text-overflow: ellipsis; }
+  .who .tag{
+    font-family:'Space Mono', monospace; font-size: 9px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink-soft);
+    white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+  }
+  .who .tag b{ color: var(--amber); font-weight: 700; }
+  .ph{ width: 24px; height: 24px; border-radius: 50%; background: #243652; margin-left: 14px; flex: none; }
+
+  .champion{
+    position:absolute; width: 232px; text-align:center;
+    background: var(--amber-soft); border: 1.5px solid var(--amber); border-radius: 8px; padding: 10px 8px;
+  }
+  .champion .k{ font-family:'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); }
+  .champion .v{ font-family:'Big Shoulders Display', sans-serif; font-weight: 800; font-size: 24px; text-transform: uppercase; margin-top: 2px; }
+
+  .notes{ margin: 14px 4px 0; display:flex; flex-direction:column; gap: 6px; }
+  .notes p{ margin:0; font-size: 12px; color: var(--ink-soft); }
+  .notes p.warn{ color: var(--amber); }
+  .notes p b{ color: var(--ink); font-weight: 600; }
+
+  footer{ margin-top: 20px; text-align:center; }
+  footer p{ font-size: 11px; color: var(--ink-soft); }
+
+  @media (max-width: 640px){
+    .header-bar{ align-items: flex-start; }
+    .subline{ flex-direction: column; align-items: flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="page" id="capture-area">
+
+  <div class="header-bar">
+    <div class="brand-block">
+      <div class="eyebrow">College Football · Playoff Preview</div>
+      <div class="wordmark">LUCAS<span>TOP25</span></div>
+    </div>
+    <div class="clock-fields">
+      <div class="clock-field">
+        <label>Week</label>
+        <div contenteditable="true" id="week-field">--</div>
+      </div>
+      <div class="clock-field">
+        <label>Date</label>
+        <div contenteditable="true" id="date-field">--/--/----</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subline">
+    <p>12-team field built from the ranking of the selected week. Click a team to advance it.</p>
+    <div class="toolbar no-export">
+      <button class="btn" onclick="exportPNG()">Download PNG</button>
+      <button class="btn" onclick="resetPicks()">Reset picks</button>
+    </div>
+  </div>
+
+  <div id="picker-wrap" class="no-export">
+    <span class="lbl">Load saved:</span>
+    <select id="week-picker"></select>
+    <button class="btn" onclick="loadSelected()">Load</button>
+    <span id="picker-status"></span>
+  </div>
+
+  <div class="bracket-wrap" id="bracket-wrap">
+    <div class="bracket" id="bracket"></div>
+  </div>
+
+  <div class="notes" id="notes"></div>
+
+  <footer>
+    <p>LucasTop25 · Projected field: conference champions are the best-ranked team of each conference. Higher seed hosts the first round.</p>
+  </footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  // =====================================================================
+  //  Rules (2026 format, as set by Lucas)
+  //  - 4 automatic bids: best-ranked team of ACC, Big Ten, Big 12, SEC
+  //  - 1 automatic bid: best-ranked Group of 6 team
+  //  - Notre Dame is automatic if ranked in the Top 12 (takes an at-large slot)
+  //  - the field is filled with the highest-ranked remaining teams up to 12
+  //  - seeds 1-12 follow the ranking order; seeds 1-4 get a bye;
+  //    first round is hosted by the higher seed (5v12, 6v11, 7v10, 8v9)
+  //  - the bracket is always built from Lucas's ranking of the selected week.
+  //    Only when a required slot has no candidate in it (e.g. no G6 team in
+  //    the Top 25) the model's ranking for the same week is consulted.
+  // =====================================================================
+  const FIELD_SIZE = 12;
+  const DEFAULT_REPO = 'lucasteixeira-/cfbrankingsmodel';
+  const GH_REPO_KEY = 'lt25_gh_repo';
+
+  // Power 4 membership (2026). Anything FBS not listed here (and not Notre Dame) counts as Group of 6.
+  // Review once a year together with P4_CONFERENCES in the script.
+  const P4 = {
+    'SEC': ['Alabama','Arkansas','Auburn','Florida','Georgia','Kentucky','LSU','Mississippi State','Missouri','Oklahoma','Ole Miss','South Carolina','Tennessee','Texas','Texas A&M','Vanderbilt'],
+    'Big Ten': ['Illinois','Indiana','Iowa','Maryland','Michigan','Michigan State','Minnesota','Nebraska','Northwestern','Ohio State','Oregon','Penn State','Purdue','Rutgers','UCLA','USC','Washington','Wisconsin'],
+    'Big 12': ['Arizona','Arizona State','Baylor','BYU','Cincinnati','Colorado','Houston','Iowa State','Kansas','Kansas State','Oklahoma State','TCU','Texas Tech','UCF','Utah','West Virginia'],
+    'ACC': ['Boston College','California','Clemson','Duke','Florida State','Georgia Tech','Louisville','Miami','NC State','North Carolina','Pittsburgh','SMU','Stanford','Syracuse','Virginia','Virginia Tech','Wake Forest']
+  };
+  const P4_ORDER = ['SEC','Big Ten','Big 12','ACC'];
+  const TEAM_CONF = {};
+  P4_ORDER.forEach(c => P4[c].forEach(t => { TEAM_CONF[t] = c; }));
+
+  // Stripe color per team (visual only; unknown teams fall back to a neutral tone)
+  const TEAM_COLOR = {
+    'Alabama':'#9E1B32','Arkansas':'#9D2235','Auburn':'#DD550C','Florida':'#FA4616','Georgia':'#BA0C2F','Kentucky':'#2F6FD0',
+    'LSU':'#6B3FA0','Mississippi State':'#7A1F2B','Missouri':'#F1B82D','Oklahoma':'#A6192E','Ole Miss':'#CE1126','South Carolina':'#8A1538',
+    'Tennessee':'#FF8200','Texas':'#BF5700','Texas A&M':'#7A1F2B','Vanderbilt':'#866D4B',
+    'Illinois':'#E84A27','Indiana':'#B3202A','Iowa':'#FFCD00','Maryland':'#E03A3E','Michigan':'#FFCB05','Michigan State':'#2F7D5B',
+    'Minnesota':'#9E1B32','Nebraska':'#E41C38','Northwestern':'#7B4FBF','Ohio State':'#BB0000','Oregon':'#1F8A57','Penn State':'#3A6BC5',
+    'Purdue':'#CEB888','Rutgers':'#CC0033','UCLA':'#2D68C4','USC':'#C0262F','Washington':'#7B5FC0','Wisconsin':'#C5050C',
+    'Arizona':'#CC0033','Arizona State':'#8C1D40','Baylor':'#1E7A52','BYU':'#2F6FB5','Cincinnati':'#E00122','Colorado':'#CFB87C',
+    'Houston':'#C8102E','Iowa State':'#C8102E','Kansas':'#0051BA','Kansas State':'#7B4FBF','Oklahoma State':'#FF7300','TCU':'#7A4FBF',
+    'Texas Tech':'#CC0000','UCF':'#BA9B37','Utah':'#CC0000','West Virginia':'#EAAA00',
+    'Boston College':'#98002E','California':'#FDB515','Clemson':'#F56600','Duke':'#2F54B5','Florida State':'#9C3A52','Georgia Tech':'#B3A369',
+    'Louisville':'#AD0000','Miami':'#F47321','NC State':'#CC0000','North Carolina':'#7BAFD4','Pittsburgh':'#FFB81C','SMU':'#CC0035',
+    'Stanford':'#8C1515','Syracuse':'#F76900','Virginia':'#F84C1E','Virginia Tech':'#A5304F','Wake Forest':'#9E7E38',
+    'Notre Dame':'#C99700','Boise State':'#2F6FD0','James Madison':'#7A4FBF','North Dakota State':'#FFC72C','South Florida':'#1F9E6F',
+    'Tulane':'#1F9E6F','UTSA':'#F15A22','Memphis':'#2F54B5','Navy':'#6A7FA8','Fresno State':'#CC0033'
+  };
+
+  // ---------------------------------------------------------------------
+  //  Bracket structure
+  // ---------------------------------------------------------------------
+  const CW = 232, CH = 52, BH = CH * 2, COLX = [0, 280, 560, 840], Y0 = 40, STEP = 150;
+  const GAMES = [
+    { id:'g1', col:0, y:Y0,            top:{seed:8},  bot:{seed:9}  },
+    { id:'g2', col:0, y:Y0+STEP,      top:{seed:5},  bot:{seed:12} },
+    { id:'g3', col:0, y:Y0+STEP*2,    top:{seed:7},  bot:{seed:10} },
+    { id:'g4', col:0, y:Y0+STEP*3,    top:{seed:6},  bot:{seed:11} },
+    { id:'q1', col:1, y:Y0,            top:{seed:1},  bot:{win:'g1'} },
+    { id:'q2', col:1, y:Y0+STEP,      top:{seed:4},  bot:{win:'g2'} },
+    { id:'q3', col:1, y:Y0+STEP*2,    top:{seed:2},  bot:{win:'g3'} },
+    { id:'q4', col:1, y:Y0+STEP*3,    top:{seed:3},  bot:{win:'g4'} },
+    { id:'s1', col:2, y:Y0+75,         top:{win:'q1'}, bot:{win:'q2'} },
+    { id:'s2', col:2, y:Y0+STEP*2+75,  top:{win:'q3'}, bot:{win:'q4'} },
+    { id:'f',  col:3, y:Y0+225,        top:{win:'s1'}, bot:{win:'s2'} }
+  ];
+  const GAME_BY_ID = Object.fromEntries(GAMES.map(g => [g.id, g]));
+
+  // ---------------------------------------------------------------------
+  //  State
+  // ---------------------------------------------------------------------
+  let seeds = [];        // index 0 => seed 1; entries are team objects or null
+  let picks = {};        // gameId -> winning team name
+  let outList = [];      // first teams out
+  let currentNotes = [];
+
+  const fileCache = {};  // filename -> { savedAt, teams }
+  let currentFile = null;
+
+  // ---------------------------------------------------------------------
+  //  Field selection
+  // ---------------------------------------------------------------------
+  function isG6(team){ return !TEAM_CONF[team] && team !== 'Notre Dame'; }
+
+  function selectField(ranked, model){
+    const sorted = ranked.slice().sort((a, b) => a.rank - b.rank);
+    const chosen = new Map();
+    const notes = [];
+
+    function add(t, via, source, fromModel){
+      chosen.set(t.team, {
+        team: t.team, record: t.record || '', rank: t.rank, via: via,
+        fromModel: !!fromModel
+      });
+    }
+
+    function pickBest(pred, label){
+      const fromRanking = sorted.find(t => pred(t.team) && !chosen.has(t.team));
+      if(fromRanking) return { t: fromRanking, fromModel: false };
+      if(model){
+        const m = model.find(t => pred(t.team) && !chosen.has(t.team));
+        if(m){
+          notes.push({ warn: true, html: `No ${label} team in the ranking — slot filled from the model: <b>${m.team}</b> (model #${m.rank}).` });
+          return { t: m, fromModel: true };
+        }
+      }
+      return null;
+    }
+
+    P4_ORDER.forEach(conf => {
+      const r = pickBest(team => TEAM_CONF[team] === conf, conf);
+      if(r) add(r.t, `${conf} champ`, 'auto', r.fromModel);
+    });
+
+    const g6 = pickBest(isG6, 'Group of 6');
+    if(g6) add(g6.t, 'G6 champ', 'auto', g6.fromModel);
+
+    const nd = sorted.find(t => t.team === 'Notre Dame');
+    if(nd && nd.rank <= 12 && !chosen.has('Notre Dame')) add(nd, 'Notre Dame auto', 'auto', false);
+
+    for(const t of sorted){
+      if(chosen.size >= FIELD_SIZE) break;
+      if(!chosen.has(t.team)) add(t, 'At-large', 'at-large', false);
+    }
+    // ranking shorter than the field: complete from the model, if available
+    if(model && chosen.size < FIELD_SIZE){
+      for(const t of model){
+        if(chosen.size >= FIELD_SIZE) break;
+        if(!chosen.has(t.team)) add(t, 'At-large', 'at-large', true);
+      }
+    }
+
+    // Seeding: Lucas's ranking order; teams that only exist in the model go after, by model rank
+    const rankedNames = new Set(sorted.map(t => t.team));
+    const list = Array.from(chosen.values());
+    list.sort((a, b) => {
+      const ka = rankedNames.has(a.team) ? a.rank : 1000 + a.rank;
+      const kb = rankedNames.has(b.team) ? b.rank : 1000 + b.rank;
+      return ka - kb;
+    });
+
+    const out = sorted.filter(t => !chosen.has(t.team)).slice(0, 4).map(t => t.team);
+    return { seeds: list, out, notes };
+  }
+
+  // ---------------------------------------------------------------------
+  //  Resolving who occupies each slot
+  // ---------------------------------------------------------------------
+  function slotTeam(ref){
+    if(ref.seed) return seeds[ref.seed - 1] || null;
+    const name = picks[ref.win];
+    if(!name) return null;
+    return seeds.find(s => s && s.team === name) || null;
+  }
+
+  function cleanPicks(){
+    // Drops picks that no longer match the two teams of their game (after a change upstream)
+    GAMES.forEach(g => {
+      const a = slotTeam(g.top), b = slotTeam(g.bot);
+      const w = picks[g.id];
+      if(w && !((a && a.team === w) || (b && b.team === w))) delete picks[g.id];
+    });
+  }
+
+  function pickWinner(gameId, teamName){
+    picks[gameId] = teamName;
+    // run twice in game order so deeper rounds are re-validated
+    cleanPicks(); cleanPicks();
+    render();
+  }
+
+  function resetPicks(){ picks = {}; render(); }
+
+  // ---------------------------------------------------------------------
+  //  Rendering
+  // ---------------------------------------------------------------------
+  function el(tag, cls, text){
+    const e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function buildSlot(team, game, which){
+    const slot = el('div', 'slot');
+    if(!team){
+      slot.classList.add('empty');
+      slot.appendChild(el('span', 'ph'));
+      return slot;
+    }
+    slot.style.setProperty('--tc', TEAM_COLOR[team.team] || '#5C6B82');
+
+    const seedNum = seeds.indexOf(team) + 1;
+    slot.appendChild(el('span', 'seed-box', String(seedNum)));
+
+    const who = el('div', 'who');
+    who.appendChild(el('span', 'name', team.team));
+    const tag = el('span', 'tag');
+    const parts = [team.via];
+    if(seedNum <= 4) parts.push('Bye');
+    const rk = team.fromModel ? `Model #${team.rank}` : `#${team.rank}`;
+    tag.innerHTML = parts.map(p => p.replace(/&/g,'&amp;').replace(/</g,'&lt;')).join(' · ') + ` · <b>${rk}</b>`;
+    who.appendChild(tag);
+    slot.appendChild(who);
+    return slot;
+  }
+
+  function render(){
+    const root = document.getElementById('bracket');
+    root.innerHTML = '';
+
+    // round labels
+    [['First Round','Hosted by higher seed'],['Quarterfinals',''],['Semifinals',''],['Championship','']].forEach((l, i) => {
+      const d = el('div', 'round-label', l[0]);
+      if(l[1]) d.appendChild(el('small', '', l[1]));
+      d.style.left = COLX[i] + 'px';
+      root.appendChild(d);
+    });
+
+    // connectors
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    GAMES.forEach(g => {
+      [g.top, g.bot].forEach(ref => {
+        if(!ref.win) return;
+        const src = GAME_BY_ID[ref.win];
+        const x1 = COLX[src.col] + CW, y1 = src.y + BH / 2;
+        const x2 = COLX[g.col],        y2 = g.y + BH / 2;
+        const xm = x1 + (x2 - x1) / 2;
+        const p = document.createElementNS(svgNS, 'path');
+        p.setAttribute('d', `M${x1} ${y1} H${xm} V${y2} H${x2}`);
+        svg.appendChild(p);
+      });
+    });
+    root.appendChild(svg);
+
+    // games
+    GAMES.forEach(g => {
+      const a = slotTeam(g.top), b = slotTeam(g.bot);
+      const box = el('div', 'game');
+      box.style.left = COLX[g.col] + 'px';
+      box.style.top = g.y + 'px';
+      const winner = picks[g.id];
+
+      [[a, b], [b, a]].forEach(([me, other], idx) => {
+        const slot = buildSlot(me, g, idx);
+        if(me && other){
+          slot.classList.add('ready');
+          slot.title = 'Click to advance ' + me.team;
+          slot.addEventListener('click', () => pickWinner(g.id, me.team));
+        }
+        if(winner && me){
+          slot.classList.add(me.team === winner ? 'is-winner' : 'is-loser');
+        }
+        box.appendChild(slot);
+      });
+      root.appendChild(box);
+    });
+
+    if(picks.f){
+      const c = el('div', 'champion');
+      c.style.left = COLX[3] + 'px';
+      c.style.top = (GAME_BY_ID.f.y + BH + 18) + 'px';
+      c.appendChild(el('div', 'k', 'Projected champion'));
+      c.appendChild(el('div', 'v', picks.f));
+      root.appendChild(c);
+    }
+
+    renderNotes();
+  }
+
+  function renderNotes(){
+    const box = document.getElementById('notes');
+    box.innerHTML = '';
+    if(outList.length){
+      const p = el('p');
+      p.innerHTML = '<b>First teams out:</b> ' + outList.join(', ');
+      box.appendChild(p);
+    }
+    currentNotes.forEach(n => {
+      const p = el('p', n.warn ? 'warn' : '');
+      p.innerHTML = n.html;
+      box.appendChild(p);
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  //  Data loading (public reads from GitHub, no token needed)
+  // ---------------------------------------------------------------------
+  function getRepo(){
+    try{ return localStorage.getItem(GH_REPO_KEY) || DEFAULT_REPO; }catch(e){ return DEFAULT_REPO; }
+  }
+
+  function normalizeSavedData(raw){
+    if(Array.isArray(raw)) return { savedAt: null, teams: raw };
+    return { savedAt: raw.savedAt || null, teams: raw.teams || [] };
+  }
+
+  function formatDate(iso){
+    if(!iso) return '';
+    const d = new Date(iso);
+    return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}/${d.getFullYear()}`;
+  }
+
+  // Minimal CSV parser (handles quoted fields)
+  function parseCSV(text){
+    const rows = [];
+    let row = [], cur = '', inQ = false;
+    for(let i = 0; i < text.length; i++){
+      const ch = text[i];
+      if(inQ){
+        if(ch === '"'){ if(text[i+1] === '"'){ cur += '"'; i++; } else inQ = false; }
+        else cur += ch;
+      } else if(ch === '"') inQ = true;
+      else if(ch === ','){ row.push(cur); cur = ''; }
+      else if(ch === '\n' || ch === '\r'){
+        if(ch === '\r' && text[i+1] === '\n') i++;
+        row.push(cur); cur = '';
+        if(row.length > 1 || row[0] !== '') rows.push(row);
+        row = [];
+      } else cur += ch;
+    }
+    if(cur !== '' || row.length){ row.push(cur); rows.push(row); }
+    return rows;
+  }
+
+  // Finds the model CSV for the same week (data/<season>/week<N>.csv) — only called when needed
+  async function fetchModelRanking(filename, savedAt){
+    const label = filename.replace(/^ranking-/, '').replace(/\.json$/, '');
+    const yearInLabel = (label.match(/(20\d\d)/) || [])[1];
+    const season = yearInLabel || (savedAt ? new Date(savedAt).getFullYear() : new Date().getFullYear());
+    const weekNum = (label.replace(/(20\d\d)/, '').match(/(\d+)/) || [])[1];
+    const isPre = /preseason/i.test(label);
+    const repo = getRepo();
+    try{
+      const listRes = await fetch(`https://api.github.com/repos/${repo}/contents/data/${season}`);
+      if(!listRes.ok) return null;
+      const items = await listRes.json();
+      const csvs = items.filter(f => f.type === 'file' && /\.csv$/i.test(f.name));
+      let match = null;
+      if(isPre) match = csvs.find(f => /preseason/i.test(f.name));
+      else if(weekNum !== undefined) match = csvs.find(f => new RegExp(`^week0*${parseInt(weekNum,10)}\\.csv$`, 'i').test(f.name));
+      if(!match) return null;
+      const res = await fetch(match.download_url);
+      if(!res.ok) return null;
+      const rows = parseCSV(await res.text());
+      const head = rows[0].map(h => h.trim());
+      const iRank = head.indexOf('rank'), iTeam = head.indexOf('team'), iRec = head.indexOf('record');
+      if(iRank < 0 || iTeam < 0) return null;
+      return rows.slice(1).map(r => ({ rank: parseInt(r[iRank], 10), team: r[iTeam], record: iRec >= 0 ? r[iRec] : '' }))
+                 .filter(t => !isNaN(t.rank));
+    }catch(e){ return null; }
+  }
+
+  async function buildFor(filename){
+    const data = fileCache[filename];
+    if(!data) return;
+    currentFile = filename;
+    const status = document.getElementById('picker-status');
+
+    const ranked = data.teams.map((t, i) => ({ rank: t.rank || (i + 1), team: t.team, conf: t.conf, record: t.record }));
+
+    // 1st pass: ranking only. Consult the model only if a required slot has no candidate.
+    let result = selectField(ranked, null);
+    const needsModel = result.seeds.length < FIELD_SIZE ||
+      !P4_ORDER.every(c => ranked.some(t => TEAM_CONF[t.team] === c)) ||
+      !ranked.some(t => isG6(t.team));
+    if(needsModel){
+      status.textContent = 'Consulting model for a missing slot...';
+      const model = await fetchModelRanking(filename, data.savedAt);
+      if(model) result = selectField(ranked, model);
+      else result.notes.push({ warn: true, html: 'A required slot has no team in the ranking and the model file for this week could not be loaded.' });
+    }
+
+    seeds = result.seeds.slice(0, FIELD_SIZE);
+    while(seeds.length < FIELD_SIZE) seeds.push(null);
+    outList = result.out;
+    currentNotes = result.notes;
+    picks = {};
+    render();
+
+    const label = filename.replace(/^ranking-/, '').replace(/\.json$/, '').replace(/_/g, ' ');
+    document.getElementById('week-field').textContent = label;
+    if(data.savedAt) document.getElementById('date-field').textContent = formatDate(data.savedAt);
+    status.textContent = `Loaded (${data.teams.length} ranked teams)`;
+  }
+
+  async function loadSelected(){
+    const filename = document.getElementById('week-picker').value;
+    if(!filename) return;
+    const status = document.getElementById('picker-status');
+    if(!fileCache[filename]){
+      status.textContent = 'Loading...';
+      try{
+        const res = await fetch(`https://raw.githubusercontent.com/${getRepo()}/main/data/${filename}`);
+        if(!res.ok){ status.textContent = 'Load error'; return; }
+        fileCache[filename] = normalizeSavedData(await res.json());
+      }catch(e){ status.textContent = 'Network failure'; return; }
+    }
+    await buildFor(filename);
+  }
+
+  async function populatePicker(){
+    const status = document.getElementById('picker-status');
+    try{
+      const res = await fetch(`https://api.github.com/repos/${getRepo()}/contents/data`);
+      if(!res.ok){ status.textContent = ''; return; }
+      const items = await res.json();
+      const files = items.filter(f => f.type === 'file' && /^ranking-.*\.json$/.test(f.name));
+      if(!files.length) return;
+
+      const select = document.getElementById('week-picker');
+      let latest = null, latestDate = null;
+      for(const f of files){
+        let data = { savedAt: null, teams: [] };
+        try{ data = normalizeSavedData(await (await fetch(f.download_url)).json()); }catch(e){}
+        fileCache[f.name] = data;
+        const opt = document.createElement('option');
+        opt.value = f.name;
+        opt.textContent = f.name.replace(/^ranking-/, '').replace(/\.json$/, '');
+        select.appendChild(opt);
+        const d = data.savedAt ? new Date(data.savedAt) : new Date(0);
+        if(!latestDate || d > latestDate){ latestDate = d; latest = f.name; }
+      }
+      document.getElementById('picker-wrap').style.display = 'flex';
+      if(latest){ select.value = latest; await buildFor(latest); }
+    }catch(e){
+      // offline or API unavailable: leave the empty bracket
+    }
+  }
+
+  // ---------------------------------------------------------------------
+  //  Export
+  // ---------------------------------------------------------------------
+  async function exportPNG(){
+    const wrap = document.getElementById('bracket-wrap');
+    const prevOverflow = wrap.style.overflowX;
+    wrap.style.overflowX = 'visible';
+    document.querySelectorAll('.no-export').forEach(e => e.style.visibility = 'hidden');
+    const canvas = await html2canvas(document.getElementById('capture-area'), { scale: 2, backgroundColor: '#0B1220' });
+    document.querySelectorAll('.no-export').forEach(e => e.style.visibility = 'visible');
+    wrap.style.overflowX = prevOverflow;
+    const label = (document.getElementById('week-field').textContent.trim() || 'bracket').replace(/\s+/g, '_');
+    const link = document.createElement('a');
+    link.download = `LucasTop25_Bracket_${label}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  // initial render (empty bracket) and data
+  render();
+  populatePicker();
+</script>
+
+</body>
+</html>
