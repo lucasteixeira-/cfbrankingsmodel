@@ -1,0 +1,155 @@
+{
+  "savedAt": "2026-10-18T14:18:39.732Z",
+  "teams": [
+    {
+      "rank": 1,
+      "team": "BYU",
+      "conf": "Big 12",
+      "record": "6-0"
+    },
+    {
+      "rank": 2,
+      "team": "Miami",
+      "conf": "ACC",
+      "record": "6-0"
+    },
+    {
+      "rank": 3,
+      "team": "Ohio State",
+      "conf": "Big Ten",
+      "record": "6-1"
+    },
+    {
+      "rank": 4,
+      "team": "Texas Tech",
+      "conf": "Big 12",
+      "record": "6-0"
+    },
+    {
+      "rank": 5,
+      "team": "Utah",
+      "conf": "Big 12",
+      "record": "6-0"
+    },
+    {
+      "rank": 6,
+      "team": "UCLA",
+      "conf": "Big Ten",
+      "record": "6-0"
+    },
+    {
+      "rank": 7,
+      "team": "Ole Miss",
+      "conf": "SEC",
+      "record": "5-1"
+    },
+    {
+      "rank": 8,
+      "team": "Georgia",
+      "conf": "SEC",
+      "record": "6-1"
+    },
+    {
+      "rank": 9,
+      "team": "Tennessee",
+      "conf": "SEC",
+      "record": "6-1"
+    },
+    {
+      "rank": 10,
+      "team": "Kentucky",
+      "conf": "SEC",
+      "record": "6-1"
+    },
+    {
+      "rank": 11,
+      "team": "Indiana",
+      "conf": "Big Ten",
+      "record": "6-1"
+    },
+    {
+      "rank": 12,
+      "team": "Houston",
+      "conf": "Big 12",
+      "record": "6-1"
+    },
+    {
+      "rank": 13,
+      "team": "Notre Dame",
+      "conf": "FBS Independents",
+      "record": "6-1"
+    },
+    {
+      "rank": 14,
+      "team": "Alabama",
+      "conf": "SEC",
+      "record": "5-2"
+    },
+    {
+      "rank": 15,
+      "team": "LSU",
+      "conf": "SEC",
+      "record": "5-2"
+    },
+    {
+      "rank": 16,
+      "team": "Boise State",
+      "conf": "Pac-12",
+      "record": "5-1"
+    },
+    {
+      "rank": 17,
+      "team": "Northwestern",
+      "conf": "Big Ten",
+      "record": "5-1"
+    },
+    {
+      "rank": 18,
+      "team": "USC",
+      "conf": "Big Ten",
+      "record": "6-1"
+    },
+    {
+      "rank": 19,
+      "team": "Iowa",
+      "conf": "Big Ten",
+      "record": "5-1"
+    },
+    {
+      "rank": 20,
+      "team": "Arizona",
+      "conf": "Big 12",
+      "record": "5-1"
+    },
+    {
+      "rank": 21,
+      "team": "Wake Forest",
+      "conf": "ACC",
+      "record": "6-1"
+    },
+    {
+      "rank": 22,
+      "team": "SMU",
+      "conf": "ACC",
+      "record": "5-1"
+    },
+    {
+      "rank": 23,
+      "team": "Missouri",
+      "conf": "SEC",
+      "record": "5-2"
+    },
+    {
+      "rank": 24,
+      "team": "Florida",
+      "conf": "SEC",
+      "record": "5-2"
+    },
+    {
+      "rank": 25,
+      "team": "Texas",
+      "conf": "SEC",
+      "record": "4-2"
+    }
+  ]
+}
