@@ -1,5 +1,5 @@
 {
-  "savedAt": "2026-11-08T15:44:35.369Z",
+  "savedAt": "2026-11-08T15:45:01.556Z",
   "teams": [
     {
       "rank": 1,
@@ -129,21 +129,21 @@
     },
     {
       "rank": 22,
+      "team": "New Mexico",
+      "conf": "Mountain West",
+      "record": "8-1"
+    },
+    {
+      "rank": 23,
       "team": "Ohio State",
       "conf": "Big Ten",
       "record": "6-3"
     },
     {
-      "rank": 23,
+      "rank": 24,
       "team": "South Carolina",
       "conf": "SEC",
       "record": "6-3"
-    },
-    {
-      "rank": 24,
-      "team": "New Mexico",
-      "conf": "Mountain West",
-      "record": "8-1"
     },
     {
       "rank": 25,
